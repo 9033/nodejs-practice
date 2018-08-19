@@ -2,15 +2,8 @@
 function mxhr(method,url,send,header={}){
     return new Promise((res,rej)=>{
         let xhr=new XMLHttpRequest();
-        xhr.onload=()=>{
-            if(xhr.status==200||xhr.status==201){
-                res(xhr);
-            }
-            else{
-                rej(xhr);
-            }
-        };
-        xhr.onerror=()=>{rej(xhr);};
+        xhr.onload=()=>(xhr.status==200||xhr.status==201)?res(xhr):rej(xhr);
+        xhr.onerror=()=>rej(xhr);
         xhr.open(method,url);        
         for(let v in header){            
             xhr.setRequestHeader(v,header[v]);
@@ -18,7 +11,20 @@ function mxhr(method,url,send,header={}){
         xhr.send(send);
     });
 }
-
+//
+async function mmxhr(method,url,send,header={}){
+    try{
+        const res=await mxhr(method,url,send,header);
+        console.log(res.responseText);
+        getUser();
+        return res;
+    }
+    catch(e){
+        console.error(e);
+        return e;
+    }
+};
+//
 function getUser(){
     function useronload(xhr){//refrash user list
         var users=JSON.parse(xhr.responseText);
@@ -36,27 +42,13 @@ function getUser(){
                 if(!name){
                     return alert('이름을 입력안해?');
                 }
-                mxhr('PUT','/users/'+key,JSON.stringify({name:name}),{'Content-Type':'application/json'})
-                .then((res)=>{
-                    console.log(res.responseText);
-                    getUser();
-                })
-                .catch((rej)=>{
-                    console.log(rej.responseText);
-                });
+                mmxhr('PUT','/users/'+key,JSON.stringify({name:name}),{'Content-Type':'application/json'});
             });
             
             var remove=document.createElement('button');
             remove.textContent='삭제';
             remove.addEventListener('click', function(){
-                mxhr('DELETE','/users/'+key,'',{})
-                .then((res)=>{
-                    console.log(res.responseText);
-                    getUser();
-                })
-                .catch((rej)=>{
-                    console.log(rej.responseText);
-                });
+                mmxhr('DELETE','/users/'+key,'',{});
             });
             
             userDiv.appendChild(span);
@@ -83,13 +75,6 @@ document.getElementById('from').addEventListener('submit',function(e){
     if(!name){
         return alert('이름을 입력안해?');
     }
-    mxhr('POST','/users',JSON.stringify({name:name}),{'Content-Type':'application/json'})
-    .then((res)=>{
-        console.log(res.responseText);
-        getUser();
-    })
-    .catch((rej)=>{
-        console.log(rej.responseText);
-    });
+    mmxhr('POST','/users',JSON.stringify({name:name}),{'Content-Type':'application/json'});
     e.target.username.value='';
 });
