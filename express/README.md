@@ -19,3 +19,66 @@ cd learn-express && npm i
 ```
 npm start
 ```
+
+### 미들 웨어
+
+#### 커스텀 미들 웨어
+```
+app.use(function(req,res,next){
+  console.log(req.url, '나도 미들웨어이다.');
+  next();    
+});
+```
+
+#### morgan
+```
+...
+var logger = require('morgan');
+...
+app.use(logger('dev'));
+...
+```
+
+#### body-parser
+```
+...
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));//false:querystring, true:qs
+...
+```
+
+#### cookie-parser
+```
+...
+var cookieParser = require('cookie-parser');
+...
+app.use(cookieParser());
+...
+```
+
+#### static
+```
+...
+app.use(express.static(path.join(__dirname, 'public')));
+...
+```
+
+#### express-session
+```
+npm i express-session
+```
+```
+...
+var session=require('express-session');
+...
+app.use(session({
+  resave:false,
+  saveUninitialized: false,
+  secret: 'secret code',
+  cookie:{
+    httpOnly:true,
+    secure:false,
+  },
+}));
+...
+```
