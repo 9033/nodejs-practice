@@ -82,3 +82,15 @@ app.use(session({
 }));
 ...
 ```
+
+#### connect-flash
+```
+npm i connect-flash
+```
+```
+...
+var flash=require('connect-flash');
+...
+app.use(flash());
+...
+```
