@@ -1,20 +1,34 @@
-* npm init
-package.json을 만든다.
+#### package.json을 만든다.
+```
+npm init
+```
 
-* npm run test
-package.json에 정의되어 있는 test 명령어 실행.
+#### package.json에 정의되어 있는 test 명령어 실행.
+```
+npm run test
+```
 
-* npm install express
-express를 설치한다.
+#### express를 설치한다.
+```
+npm install express
+```
 
-* npm install morgan cookie-parser express-session
-모듈을 동시에 여러개 설치.
+#### 모듈을 동시에 여러개 설치.
+```
+npm install morgan cookie-parser express-session
+```
 
-* npm install --save-dev nodemon
-개발용 패키지를 설치.
+#### 개발용 패키지를 설치.
+```
+npm install --save-dev nodemon
+```
 
-* npm install --global rimraf
-전역설치.
+#### 전역설치.
+```
+npm install --global rimraf
+```
 
-* rimraf node_modules
-설치한 로컬 모듈을 삭제.
+#### 설치한 로컬 모듈을 삭제.
+```
+rimraf node_modules
+```
