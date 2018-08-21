@@ -1,0 +1,12 @@
+extends layout
+
+block content
+    //comment
+    h1 my fav on reddit
+    if my_api
+        iframe#my_api(src=my_api width='1000' height='600')
+    else
+        h1 error
+    br
+    a(href='/') main
+
