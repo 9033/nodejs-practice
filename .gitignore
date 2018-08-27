@@ -63,3 +63,8 @@ typings/
 
 #custom env
 9033.env
+
+
+.vscode/
+
+config.json

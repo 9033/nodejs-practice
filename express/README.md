@@ -1,5 +1,7 @@
 ## express framework
 
+### 새 express 프로젝트 생성
+
 #### express-generator 전역설치
 ```
 npm i -g express-generator
@@ -23,7 +25,7 @@ npm start
 ### 미들 웨어
 
 #### 커스텀 미들 웨어
-```
+```javascript
 app.use(function(req,res,next){
   console.log(req.url, '나도 미들웨어이다.');
   next();    
@@ -31,7 +33,7 @@ app.use(function(req,res,next){
 ```
 
 #### morgan
-```
+```javascript
 ...
 var logger = require('morgan');
 ...
@@ -40,7 +42,7 @@ app.use(logger('dev'));
 ```
 
 #### body-parser
-```
+```javascript
 ...
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));//false:querystring, true:qs
@@ -48,7 +50,7 @@ app.use(express.urlencoded({ extended: false }));//false:querystring, true:qs
 ```
 
 #### cookie-parser
-```
+```javascript
 ...
 var cookieParser = require('cookie-parser');
 ...
@@ -57,7 +59,7 @@ app.use(cookieParser());
 ```
 
 #### static
-```
+```javascript
 ...
 app.use(express.static(path.join(__dirname, 'public')));
 ...
@@ -67,7 +69,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 ```
 npm i express-session
 ```
-```
+```javascript
 ...
 var session=require('express-session');
 ...
@@ -87,7 +89,7 @@ app.use(session({
 ```
 npm i connect-flash
 ```
-```
+```javascript
 ...
 var flash=require('connect-flash');
 ...
