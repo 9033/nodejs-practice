@@ -18,7 +18,7 @@ module.exports=(sequelize, DataTypes)=>{
             unique: true,
         },
         age:{
-            type: DataTypes.INTEGER,UNSIGNED,
+            type: DataTypes.INTEGER.UNSIGNED,
             allowNull: false,
         },
         married:{
