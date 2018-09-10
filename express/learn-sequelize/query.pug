@@ -1,0 +1,25 @@
+doctype html
+html
+    head
+        meta(charset='UTF-8')
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        meta(name="format-detection" content="telephone=no")
+        style.
+            table {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+
+            table th, table td {
+                border: 1px solid black;
+            }
+    body
+        table
+            - const rr=JSON.parse(r);
+            tr
+                each i, index in rr[0]
+                    th=index
+            for row in rr
+                tr
+                    for col in row
+                        td #{col}

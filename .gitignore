@@ -67,4 +67,5 @@ typings/
 
 .vscode/
 
-config.json
+#appended files in uploads (ch9)
+nodebird/uploads/
