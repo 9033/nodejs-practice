@@ -57,3 +57,53 @@ posts, hashtags, users, postHashtags, Follows
 
 ## 기타
 e-mail주소로 사용자를 구분한다. 그래서 로컬 로그인할때와 카카오 로그인할때 메일주소가 같으면 안됨.  
+
+## 추가기능
+책에는 '스스로 해보기' 파트에 나옴.  
+### 언팔
+언팔할 사용자의 아이디로 시퀄라이즈의 remove메소드를 호출함.  
+요청을 보내고 나서 바로 페이지를 갱신하지 않고, 서버에서 언팔후 응답이 오면 페이지를 갱신하게함.  
+
+언팔 버튼을 추가. (views/profile.pug)
+```pug
+            button.un8(user=following.id) un8
+```
+언팔할 사용자의 아이디를 전송. (views/profile.pug)
+```pug
+    script.
+      function mxhr(method,url,send,headers={}){
+        return fetch(url,{
+            method,
+            headers,
+            body:send,
+        })
+        .then(res=>res);
+      }
+      document.querySelectorAll('.un8').forEach( un8=>{
+        un8.onclick=e=>{
+          console.log(e);
+          mxhr('POST','/user/' + un8.getAttribute('user') + '/unfollow','',{})
+          .then((res)=>{
+            console.log(res.responseText);
+            location.reload();
+          })
+          .catch((rej)=>{
+            console.error(rej.responseText);
+          });
+        };
+      });
+```
+언팔할 사용자의 아이디를 전송받아서 처리. (routes/user.js)
+```js
+router.post('/:id/unfollow',isLoggedIn,async (req,res,next)=>{
+    try{
+        const user=await User.find({where:{id:req.user.id}});
+        await user.removeFollowing(parseInt(req.params.id,10));
+        res.send('success');
+    }
+    catch(e){
+        console.error(e);
+        next(e);
+    }
+});
+```

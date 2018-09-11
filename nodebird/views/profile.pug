@@ -7,8 +7,32 @@ block content
       if user.Followings
         for following in user.Followings
           div= following.nick
+            button.un8(user=following.id) un8
     .followers.half
       h2 팔로워 목록
       if user.Followers
         for follower in user.Followers
           div= follower.nick
+    script.
+      function mxhr(method,url,send,headers={}){
+        return fetch(url,{
+            method,
+            headers,
+            body:send,
+        })
+        .then(res=>res);
+      }
+      document.querySelectorAll('.un8').forEach( un8=>{
+        un8.onclick=e=>{
+          console.log(e);
+          mxhr('POST','/user/' + un8.getAttribute('user') + '/unfollow','',{})
+          .then((res)=>{
+            console.log(res.responseText);
+            location.reload();
+          })
+          .catch((rej)=>{
+            console.error(rej.responseText);
+          });
+        };
+      });
+      
