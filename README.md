@@ -13,6 +13,8 @@
 |[/express/learn-sequelize](/express/learn-sequelize)|MySQL|
 |[/express/learn-mongoose](/express/learn-mongoose)|MongoDB|
 |[/nodebird](/nodebird)|sns service|
+|[/nodebird-api](/nodebird-api)|api server|
+|[/nodebird-call](/nodebird-call)|api client|
 
 ## 기타
 javascript는 해봄.  

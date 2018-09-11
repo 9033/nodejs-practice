@@ -13,7 +13,7 @@ router.get('/join',isNotLoggedIn,(req,res)=>{
         joinError:req.flash('joinError'),
     });
 });
-router.get('/',(req,res)=>{
+router.get('/',(req,res,next)=>{
     console.log('page.js');
     Post.findAll({
         include:{
