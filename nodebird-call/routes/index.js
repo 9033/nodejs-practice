@@ -56,7 +56,9 @@ router.get('/search/:hashtag', async(req,res,nest)=>{
         }
     }
 });
-
+router.get('/', async (req,res,next)=>{
+    res.render('main',{key:process.env.CLIENT_SECRET});
+});
 
 module.exports=router;
 

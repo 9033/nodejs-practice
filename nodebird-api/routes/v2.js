@@ -1,6 +1,7 @@
 const express=require('express');
 const router=express.Router();
-
+const cors=require('cors');
+const url=require('url');
 // const passport=require('passport');
 // const bcrypt=require('bcrypt');
 const middlewares=require('./middlewares');
@@ -8,7 +9,18 @@ const models=require('../models');
 
 const jwt=require('jsonwebtoken');
 
-
+// router.use(cors());
+router.use(async(req,res,next)=>{
+    const domain = await models.Domain.find({
+        where:{host:url.parse(req.get('origin')).host},
+    });
+    if(domain){
+        cors({origin:req.get('origin')})(req,res,next);
+    }
+    else{
+        next();
+    }
+});
 router.post('/token', middlewares.apiLimiter,async (req,res)=>{
     const {clientSecret}=req.body;
     try{

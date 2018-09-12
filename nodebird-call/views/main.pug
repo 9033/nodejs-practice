@@ -1,0 +1,22 @@
+doctype
+html
+    head
+        title front api request
+    body
+        #result
+        script.
+            let xhr=new XMLHttpRequest();
+            xhr.onreadystatechange=()=>{
+                if(xhr.readyState===xhr.DONE){
+                    if(xhr.status===200){
+                        document.querySelector('#result').textContent=xhr.responseText;
+                    }
+                    else{
+                        console.error(xhr.reponseText);
+                    }
+                }
+            };
+            xhr.open("POST",'http://localhost:8002/v2/token');        
+            xhr.setRequestHeader('Content-Type','application/json');
+            xhr.send(JSON.stringify({clientSecret:'#{key}'}));
+            

@@ -25,19 +25,20 @@
 + uuid
 + jsonwebtoken
 + express-rate-limit
++ cors
 
 ## http methods
 | http메서드   |      주소      |입력|  역할(출력) |
 |-|-|-|-|
 | GET    |/        |||
-| GET    |/v1/token        || |
-| GET    |/v1/test        ||  |
-| GET    |/v1/posts/my        ||  |
-| GET    |/v1/posts/hashtag/:title        |||
-| GET    |/v2/token        || |
-| GET    |/v2/test        ||  |
-| GET    |/v2/posts/my        ||  |
-| GET    |/v2/posts/hashtag/:title        |||
+| GET    |/v1/token           ||(deprecated) |
+| GET    |/v1/test            ||(deprecated)  |
+| GET    |/v1/posts/my        ||(deprecated)  |
+| GET    |/v1/posts/hashtag/:title        ||(deprecated)|
+| GET    |/v2/token               |||
+| GET    |/v2/test                |||
+| GET    |/v2/posts/my            |||
+| GET    |/v2/posts/hashtag/:title|||
 | GET    |/domain |||
 | POST   |/auth/join    |이메일 닉네임 비밀번호|회원가입|
 | POST   |/auth/login    |메일주소, 비밀번호|로컬 로그인|
