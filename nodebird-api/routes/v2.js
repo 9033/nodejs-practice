@@ -8,8 +8,8 @@ const models=require('../models');
 
 const jwt=require('jsonwebtoken');
 
-router.use(middlewares.deprecated);
-router.post('/token', async (req,res)=>{
+
+router.post('/token', middlewares.apiLimiter,async (req,res)=>{
     const {clientSecret}=req.body;
     try{
         const domain=await models.Domain.find({
@@ -31,7 +31,7 @@ router.post('/token', async (req,res)=>{
             }
             ,process.env.JWT_SECRET
             ,{
-                expiresIn:'1m',
+                expiresIn:'10m',
                 issuer:'nodebird',
             }
         ); 
@@ -51,11 +51,11 @@ router.post('/token', async (req,res)=>{
     }
 });
 
-router.get('/test', middlewares.verifyToken,(req,res)=>{
+router.get('/test', middlewares.verifyToken,middlewares.apiLimiter,(req,res)=>{
     res.json(req.decoded);
 });
 
-router.get('/posts/my', middlewares.verifyToken,async (req,res)=>{
+router.get('/posts/my', middlewares.apiLimiter,middlewares.verifyToken,async (req,res)=>{
     models.Post.findAll({where:{userId:req.decoded.id}})
     .then((posts)=>{
         console.log(posts);
@@ -73,7 +73,7 @@ router.get('/posts/my', middlewares.verifyToken,async (req,res)=>{
     });
 });
 
-router.get('/posts/hashtag/:title', async (req,res,next)=>{
+router.get('/posts/hashtag/:title', middlewares.verifyToken,middlewares.apiLimiter,async (req,res)=>{
     try{
         const hashtag=await models.Hashtag.find({ where:{title:req.params.title}});
         if(!hashtag){

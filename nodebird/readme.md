@@ -29,7 +29,7 @@
 | GET    |/        || main page |
 | GET    |/profile ||내 정보|
 | GET    |/join    ||회원가입 페이지|
-| POST   |/join    |이메일 닉네임 비밀번호|회원가입|
+| POST   |/auth/join    |이메일 닉네임 비밀번호|회원가입|
 | POST   |/auth/login    |메일주소, 비밀번호|로컬 로그인|
 | GET    |/auth/logout    ||로그아웃|
 | GET    |/auth/kakao    ||카카오 로그인|

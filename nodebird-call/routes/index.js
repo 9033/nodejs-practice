@@ -1,7 +1,7 @@
 const express=require('express');
 const router=express.Router();
 const axios=require('axios');
-const URL='http://localhost:8002/v1';
+const URL='http://localhost:8002/v2';
 
 const request=async(req,api)=>{
     try{
