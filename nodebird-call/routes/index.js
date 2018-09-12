@@ -1,11 +1,12 @@
 const express=require('express');
 const router=express.Router();
 const axios=require('axios');
+const URL='http://localhost:8002/v1';
 
-router.get('/test', async (req,res,next)=>{
+const request=async(req,api)=>{
     try{
         if(!req.session.jwt){
-            const tokenResult=await axios.post('http://localhost:8002/v1/token',{
+            const tokenResult=await axios.post(`${URL}/token`,{
                 clientSecret:process.env.CLIENT_SECRET,
             });
             if(tokenResult.data&&tokenResult.data.code===200){
@@ -16,21 +17,46 @@ router.get('/test', async (req,res,next)=>{
                 return res.json(tokenResult.data);
             }
         }
-        const result=await axios.get('http://localhost:8002/v1/test',{
+        return await axios.get(`${URL}${api}`,{
             headers:{authorization:req.session.jwt},
-        });
-        console.log('토큰 test');
-        return res.json(result.data);
+        });        
     }
     catch(e){
         console.error(e);
-        if(e.response.status===419){
-            return res.json(e.response.data);
+        if(e.response.status<500){
+            return e.response;
         }
-        return next(e);
+        throw e;
     }
+};
 
+// router.get('/test', async (req,res,next)=>{
+// });
+
+router.get('/mypost', async(req,res,nest)=>{
+    try{
+        const result=await request(req, '/posts/my');
+        res.json(result.data);
+    }
+    catch(e){
+        console.error(e);
+        next(e);
+    }
 });
+
+router.get('/search/:hashtag', async(req,res,nest)=>{
+    try{
+        const result=await request(req, `/posts/hashtag/${encodeURIComponent(req.params.hashtag)}`);
+        res.json(result.data);
+    }
+    catch(e){
+        if(e.code){
+            console.error(e);
+            next(e);
+        }
+    }
+});
+
 
 module.exports=router;
 

@@ -55,4 +55,47 @@ router.get('/test', middlewares.verifyToken,(req,res)=>{
     res.json(req.decoded);
 });
 
+router.get('/posts/my', middlewares.verifyToken,async (req,res)=>{
+    models.Post.findAll({where:{userId:req.decoded.id}})
+    .then((posts)=>{
+        console.log(posts);
+        res.json({
+            code:200,
+            payload:posts,
+        });
+    })
+    .catch(e=>{
+        console.error(e);
+        return res.status(500).json({
+            code:500,
+            message:'서버 에러',
+        });
+    });
+});
+
+router.get('/posts/hashtag/:title', async (req,res,next)=>{
+    try{
+        const hashtag=await models.Hashtag.find({ where:{title:req.params.title}});
+        if(!hashtag){
+            return res.status(404).json({
+                code:404,
+                message:'검색 결과가 없음.',
+            });
+        }
+        //let posts=[];
+        const posts=await hashtag.getPosts();
+        return res.json({
+            code:200,
+            payload:posts,
+        });
+    }
+    catch(e){
+        console.error(e);
+        return res.status(500).json({
+            code:500,
+            message:'서버 에러',
+        });
+    };
+});
+
 module.exports=router;
