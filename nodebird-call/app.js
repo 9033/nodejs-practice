@@ -3,36 +3,34 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const session=require('express-session');
-const flash=require('connect-flash');
-const passport=require('passport');
 require('dotenv').config();
 
 // const pageRouter=require('./routes/page');
-const authRouter=require('./routes/auth');
+// const authRouter=require('./routes/auth');
 const indexRouter=require('./routes');
-const v1=require('./routes/v1');
+// const v1=require('./routes/v1');
 // const postRouter=require('./routes/post');
 // const userRouter=require('./routes/user');
-const {sequelize}=require('./models');
-const passportConfig=require('./passport');
+// const {sequelize}=require('./models');
+// const passportConfig=require('./passport');
 
 const app=express();
-sequelize.sync();
-passportConfig(passport);
+// sequelize.sync();
+// passportConfig(passport);
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-app.set('port', process.env.PORT || 8002);
+app.set('port', process.env.PORT || 8003);
 
 app.use(morgan('dev'));
-app.use(express.static(path.join(__dirname,'public')));
+// app.use(express.static(path.join(__dirname,'public')));
 // app.use('/img',express.static(path.join(__dirname,'uploads')));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
 //app.use(cookieParser('nodebirdsecret'));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session({
-    resave:true,
+    resave:false,
     saveUninitialized: false,
     //secret:'nodebirdsecret',
     secret:process.env.COOKIE_SECRET,
@@ -41,14 +39,14 @@ app.use(session({
         secure:false,
     },
 }));
-app.use(flash());
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(flash());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 
 app.use('/',indexRouter);
-app.use('/auth',authRouter);
-app.use('/v1',v1);
+// app.use('/auth',authRouter);
+// app.use('/v1',v1);
 // app.use('/post',postRouter);
 // app.use('/user',userRouter);
 
