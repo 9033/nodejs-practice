@@ -18,5 +18,6 @@
 ## http methods
 | http메서드   |      주소      |입력|  역할(출력) |
 |-|-|-|-|
-| GET    |/mypost |||
-| GET    |/search/:hashtag    |||
+| GET    |/ |||
+| GET    |/mypost ||게시글을 출력|
+| GET    |/search/:hashtag    ||해당하는 태그를 가진 게시물|

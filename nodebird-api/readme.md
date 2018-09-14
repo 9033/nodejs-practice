@@ -35,11 +35,11 @@
 | GET    |/v1/test            ||(deprecated)  |
 | GET    |/v1/posts/my        ||(deprecated)  |
 | GET    |/v1/posts/hashtag/:title        ||(deprecated)|
-| GET    |/v2/token               |||
-| GET    |/v2/test                |||
-| GET    |/v2/posts/my            |||
-| GET    |/v2/posts/hashtag/:title|||
-| GET    |/domain |||
+| GET    |/v2/token               ||토큰 발급|
+| GET    |/v2/test                ||발급 된 토큰 테스트|
+| GET    |/v2/posts/my            ||게시글 (JSON)|
+| GET    |/v2/posts/hashtag/:title||태크를 넣은 게시글 (JSON)|
+| GET    |/domain ||API call 서버의 도메인 등록|
 | POST   |/auth/join    |이메일 닉네임 비밀번호|회원가입|
 | POST   |/auth/login    |메일주소, 비밀번호|로컬 로그인|
 | GET    |/auth/logout    ||로그아웃|
