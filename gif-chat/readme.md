@@ -15,6 +15,7 @@
 + morgan
 + cookie-parser
 + ws
++ socket-io
 
 ## http methods
 | http메서드   |      주소      |입력|  역할(출력) |

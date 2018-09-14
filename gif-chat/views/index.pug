@@ -5,12 +5,10 @@ html
         title Gif 채팅방
     body
         div F12를 눌러 조이를 표하시오
+        script(src="/socket.io/socket.io.js")
         script.
-            var webSocket=new WebSocket('ws://localhost');
-            webSocket.onopen=()=>{
-                console.log(`${new Date()} 연결 성공`);
-            }
-            webSocket.onmessage=(event)=>{
-                console.log(`${new Date()} ${event.data}`);
-                webSocket.send('답장이다.');
-            }
+            var socket=io.connect('http://localhost',{path:'/socket.io'});
+            socket.on('news',d=>{
+                console.log(d);
+                socket.emit('reply','hello js');
+            });

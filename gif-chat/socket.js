@@ -1,27 +1,24 @@
-const WebSocket=require('ws');
+const SocketIO=require('socket.io');
 
 module.exports=(server)=>{
-    const wss=new WebSocket.Server({server});
+    const io=SocketIO(server,{path:'/socket.io'});
 
-    wss.on('connection',(ws,req)=>{
+    io.on('connection',(socket)=>{
+        const req=socket.request;
         const ip=req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-        console.log(`${new Date()} 새로운 클라이언트 접속 ${ip}`);
-        ws.on('message',msg=>{//when the msg received from client
-            console.log(`${new Date()} ${msg}`);
+        console.log(`${new Date()} 새로운 클라이언트 접속 ${ip} ${socket.id} ${req.ip}`);
+        socket.on('reply',d=>{
+            console.log(`${new Date()} ${d}`);
         });
-        ws.on('error',e=>{
+        socket.on('error',e=>{
             console.error(`${new Date()} ${e}`);
         });
-        ws.on('close',()=>{
-            console.log(`${new Date()} 클라이언트 접속 해제 ${ip}`);
-            clearInterval(ws.interval)
+        socket.on('disconnect',()=>{
+            console.log(`${new Date()} 클라이언트 접속 해제 ${ip} ${socket.id}`);
+            clearInterval(socket.interval);
         });
-        const interval=setInterval(()=>{
-            if(ws.readyState===ws.OPEN){
-                console.log(`${new Date()} send msg`);
-                ws.send('서버에서 클라이언트로 메시지를 보냅니다.');
-            }
+        socket.interval=setInterval(()=>{
+            socket.emit('news','hello socketio');
         },3000);
-        ws.interval=interval;
     });
 };
