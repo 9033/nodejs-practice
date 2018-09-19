@@ -26,7 +26,7 @@ block content
               div=chat.chat
   form#chat-form(action='/chat' method='post' enctype='multipart/form-data')     
     label(for='gif') gif 올리기
-    input#img(type='file' name='gif' accept='image/gif')
+    input#gif(type='file' name='gif' accept='image/gif')
     input#chat(name='chat')
     button(type='submit') 전송
   script(src='/socket.io/socket.io.js')
@@ -89,3 +89,18 @@ block content
             xhr.send(JSON.stringify({chat:this.chat.value}));
         }
     };
+    document.querySelector('#gif').addEventListener('change', function (e) {
+        var formData = new FormData();
+        console.log(e.target.file);
+        formData.append('gif', e.target.files[0]);
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+              e.target.file=null;
+          } else {
+            console.error(xhr.responseText);
+          }
+        };
+        xhr.open('POST', '/room/#{room._id}/gif');
+        xhr.send(formData);
+    });

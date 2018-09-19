@@ -90,6 +90,65 @@ router.post('/room/:id/chat',async (req,res,next)=>{
             chat:req.body.chat,
         });
         await chat.save();
+        console.log(req.cookies.io);
+        req.app.get('io').of('/chat').to(req.params.id).emit('chat',chat);
+        // req.app.get('io').of('/chat').to(req.params.id).emit('exit',{chat:'흑우'});
+        // req.app.get('io').to(req.cookies.io).emit('exit',{chat:'검은소'});
+        res.send('ok');
+
+      
+        
+    }
+    catch(e){
+        console.error(e);
+        next(e);
+    }
+});
+
+const multer=require('multer');
+
+const path=require('path');
+const fs=require('fs');
+if( ! fs.existsSync('uploads') ){
+    console.log('make directory "uploads"');
+    fs.mkdirSync('uploads');
+}
+const upload=multer({
+    storage:multer.diskStorage({
+        destination(req, file, cb){
+            cb(null,'uploads/');
+        },
+        filename(req,file,cb){
+            const ext=path.extname(file.originalname);
+            cb(null,path.basename(file.originalname, ext)+new Date().valueOf()+ext);            
+        },        
+    }),
+    limits: {fileSize:5*1024*1024},
+});
+const upgif=function(req,res,next){
+    upload.single('gif')(req,res,e=>{
+            if(e){
+                req.app.get('io').of('/chat').to(req.params.id).emit('exit',{
+                    user:'system',
+                    chat:'업로드 오류',
+                });
+                next(e);
+                return false;
+            }
+            next();
+        })
+        
+}
+
+router.post('/room/:id/gif',upgif, async (req,res,next)=>{
+    try{
+        const chat=new Chat({
+            room:req.params.id,
+            user:req.session.color,
+            //chat:req.body.chat,
+            gif:req.file.filename,
+        });
+        await chat.save();
         req.app.get('io').of('/chat').to(req.params.id).emit('chat',chat);
         res.send('ok');
     }

@@ -30,16 +30,17 @@ module.exports=(server, app, sessionMiddleware)=>{
         sessionMiddleware(s.request,s.request.res,next);
     });
     room.on('connection',s=>{
-        console.log('room에 접속');
+        console.log(s.id, 'room에 접속');
         s.on('disconnect',()=>{
-            console.log('room에 접속 해제');
+            console.log(s.id, 'room에 접속 해제');
         });
     });
     chat.on('connection',s=>{
-        console.log('chat에 접속');
+        console.log(s.id, 'chat에 접속');
         const req=s.request;
         const {headers:{referer}}=req;
         const roomId=referer.split('/')[referer.split('/').length-1].replace(/\?.+/,'');
+        console.log(s.id);
         s.join(roomId);
         s.to(roomId).emit('join',{
             user:'system',
