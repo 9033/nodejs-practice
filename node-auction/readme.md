@@ -9,21 +9,18 @@
 ## http methods
 | http메서드   |      주소      |입력|  역할(출력) |
 |-|-|-|-|
-| GET    |/ ||메인 (방 목록)|
-| GET    |/room ||방 생성 페이지|
-| POST   |/room |제목, 인원[, 비번]|방 생성|
-| GET    |/room/:id |[비번]|방 입장|
-| DELETE |/room/:id ||방 삭제|
-| POST   |/room/:id/chat |대화||
-| POST   |/room/:id/gif |그림(gif)||
+| GET    |/ ||메인 (경매 목록, 로그인)|
+| GET    |/join    ||회원가입 페이지|
+| GET    |/good    ||물건등록 페이지|
+| POST   |/good    |상품명, 상품사진, 시작가격|물건등록|
+| POST   |/auth/join    |이메일 닉네임 비밀번호 돈|회원가입|
+| POST   |/auth/login    |메일주소, 비밀번호|로컬 로그인|
+| GET    |/auth/logout    ||로그아웃|
+| GET    |/\*.\*    |파일명|파일|
+| GET    |/img/\*.\*    |파일명|상품 사진|
 
 ## socket-io event
 | 소켓이벤트   |      발생      |  역할(출력) |
 |-|-|-|
-| newRoom    |서버|방이 새로 생성되면 발생|
-| removeRoom    |서버|방을 제거하면 발생|
-| chat    |서버|누가 그림이나 글을 올렸을때|
-| exit    |서버|퇴장 알림|
-| join    |서버|입장 알림|
 
 ## 기타
