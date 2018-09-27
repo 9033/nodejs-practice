@@ -1,15 +1,14 @@
 # nodejs-practice
-## 참고 자료
 ---
-### **node.js 교과서** 에 있는 예제  
-#### 예제 소스 깃허브 링크  
+## **node.js 교과서** 에 있는 예제  
+### 예제 소스 깃허브 링크  
 [출판사](https://github.com/gilbutITbook/006982), [저자](https://github.com/zerocho/nodejs-book)  
 
-#### 실습 해본 예제  
+### 실습 해본 예제  
 |위치|제목|요약|
 |-|-|-|
 |[/rest](/rest)|rest api|라우팅|
-|[/npm](/npm)|npm|패키지 설치|
+|[/npm](/npm)|npm|패키지 설치, 삭제|
 |[/express/learn-express](/express/learn-express)|express|익스프레스 프레임워크|
 |[/express/learn-sequelize](/express/learn-sequelize)|MySQL|시퀄라이즈로 SQL DB 사용|
 |[/express/learn-mongoose](/express/learn-mongoose)|MongoDB|NoSQL DB 사용|
@@ -20,11 +19,27 @@
 
 ---
 
-### greenlock-express
-|위치|제목||
+## greenlock-express
+### 링크
+[npm 링크](https://www.npmjs.com/package/greenlock-express)
+### 위치
+|위치|제목|요약|
 |-|-|-|
 |[/https](/https)|greenlock-express|SSL or TLS|
+
 ---
+
+## Node.js MongoDB Driver
+### 링크
+[manual](https://docs.mongodb.com/manual)  
+[npm 링크](https://www.npmjs.com/package/mongodb)  
+### 위치
+|위치|제목|요약|
+|-|-|-|
+|[/mongodbdbdip](/mongodbdbdip)|mongodb driver|w express|
+
+---
+
 ## 기타
 javascript는 해봄.  
 실습 하면서 새로 접하는것.
