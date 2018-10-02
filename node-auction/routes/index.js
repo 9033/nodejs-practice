@@ -76,4 +76,72 @@ router.post('/good',midware.isLoggedIn,upload.single('img'),async (req,res,next)
     }
 });
 
+router.get('/good/:id',midware.isLoggedIn,async (req,res,next)=>{
+    try{
+        const [good,auction]=await Promise.all([
+            models.Good.find({
+                where:{id:req.params.id},
+                include:{
+                    model:models.User,
+                    as:'owner',
+                },                
+            }),
+            models.Auction.findAll({
+                where:{goodId:req.params.id},
+                include:{model:models.User},
+                order:[['bid','ASC']],
+            }),            
+        ]);
+        res.render('auction',{
+            title:good.name+' - Nodeauction',
+            good,
+            auction,
+            auctionError:req.flash('auctionError'),
+            // user:req.user,
+            // joinError:req.flash('joinError'),
+        });
+    }
+    catch(e){
+        console.error(e);
+        next(e);
+    }
+});
+
+router.post('/good/:id/bid',midware.isLoggedIn,async (req,res,next)=>{
+    try{
+        const {bid, msg}=req.body;        
+        const good=await models.Good.find({
+            where:{id:req.params.id},
+            include:{model:models.Auction},
+            order:[[{model:models.Auction},'bid','DESC']],
+        });
+        if(good.price>bid){
+            return res.status(403).send('시작 가격보다 높게 입찰해야 합니다');
+        }
+        if(new Date(good.createAt).valueOf()+(24*60*60*1000)<new Date()){
+            return res.status(403).send('경매가 이미 종료되었습니다');
+        }
+        if(good.auctions[0]&&good.auctions[0].bid>=bid){
+            return res.status(403).send('이전 가격보다 높게 입찰해야 합니다');
+        }
+        const result=await models.Auction.create({
+            bid,
+            msg,
+            userId:req.user.id,
+            goodId:req.params.id,
+        });
+
+        req.app.get('io').to(req.params.id).emit('bid',{
+            bid:result.bid,
+            msg:result.msg,
+            nick:req.user.nick,
+        });
+        return res.send('ok');
+    }
+    catch(e){
+        console.error(e);
+        next(e);
+    }
+});
+
 module.exports=router;

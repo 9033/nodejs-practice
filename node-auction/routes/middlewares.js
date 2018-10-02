@@ -3,7 +3,7 @@ exports.isLoggedIn=(req,res,next)=>{
         next();
     }
     else{
-        res.flash('loginError','로그인 필요');
+        req.flash('loginError','로그인 필요');
         res.redirect('/');
     }
 };
