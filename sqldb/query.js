@@ -1,22 +1,3 @@
-/*
-const { User }=require('./models');
-//User.findAll({}).then((r)=>{console.log(r);});
-
-async function a(){
-    let r;
-    //r=await User.findAll({});
-    //console.log(r);
-
-    r=await User.findAll({
-        attributes:['name','married'],
-    });
-    // console.log(r);
-    console.log((r[0].name));
-
-};
-a();
-*/
-
 const Sequelize = require('sequelize');
 const sequelize=new Sequelize('database', 'username', 'password', {
     dialect: 'sqlite',
@@ -46,22 +27,6 @@ r=async ()=>{
     ret=await user.create({
         name:'second',
     });
-    //console.log(ret);
-    // ret=await user.findAll();
-    // for(k in def)
-    //     console.log(k);
-    // console.log(ret[0].get('users'));
-    //ret[0].get('users');
-    // for(u in ret){
-    //     console.log(JSON.stringify(ret[u]));
-    // }
-    // let ren=[];
-    // for(i in ret){
-    //     ren.push(ret[i].get());
-    // }
-    // console.log(JSON.stringify(ren));
-    // ret=await user.find({where:{name:'느금마'}});
-    // console.log(ret);
 }
 r();
 
@@ -104,32 +69,6 @@ const server=http.createServer(function (req, res) {
             }
         }
         get();
-        // // const o={attributes:['id','name']};
-        // let fields=[];
-        // sequelize.getQueryInterface().describeTable('users')
-        // .then(r=>{
-        //     for(i in r){
-        //         //console.log(r[i],i);        
-        //         // ren.push(u[i].get());
-        //         fields.push(i);
-        //     }
-        //     console.log(fields);
-        // })
-        // .catch(e=>{console.error(e);});
-        
-        // const o={};
-        // user.findAll(o)
-        // .then((u)=>{
-        //     let ren=[];
-        //     for(i in u){
-        //         // console.log(u[i]);        
-        //         ren.push(u[i].get());
-        //     }
-        //     console.log('SERVER : render',ren);
-        //     res.writeHead(200, {'Content-Type':  'text/html' }); 
-        //     res.write(pug.renderFile('query.pug',{r:JSON.stringify(ren)}));
-        //     res.end();
-        // }).catch(e=>{console.error(e);});
     }
     else if(req.method=='PATCH'){
         //수정
@@ -141,9 +80,7 @@ const server=http.createServer(function (req, res) {
         return req.on('end',()=>{
             const b=JSON.parse(body);
             console.log('PATCH 본문(body):',b);
-            // const id=+new Date();
-            // users[id]=name;
-            // res.writeHead(201);
+
             const o={};
             o[b.field]=b.toval;
             // user.save({where:{id:b.id}})
@@ -215,29 +152,3 @@ const server=http.createServer(function (req, res) {
 server.listen(80, ()=>{
      console.log('SERVER : listen');
 });
-
-
-// await user.sync({force:true});
-
-// await user.create({
-//     name:'req.body.name',
-//   })
-//   .then(result=>{
-//     console.log(result);
-//     //res.status(201).json(result);    
-//   })
-//   .catch(e=>{
-//     console.error(e);
-//     //next(e);
-//   });
-// /*
-// user.findAll()
-// .then(users=>{
-//     console.log(users);
-//   //res.json(users)
-// })
-// .catch(e=>{
-//   console.error(e);
-//   //next(e);
-// });
-// */

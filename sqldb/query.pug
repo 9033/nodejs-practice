@@ -16,14 +16,11 @@ html
     body
         table
             - const rr=JSON.parse(r);
-            - //const rr=r;
             - const f=JSON.parse(fields);
             tr
                 th
                 for i in f
                     th=i                    
-                //- each i, index in rr[0]
-                //-     th=index
             each row, idx in rr
                 tr
                     //.data
@@ -38,16 +35,9 @@ html
                                 td(i=idx f=i) #{col}
                             default
                                 td.cell(i=idx f=i) #{col}
-                        //if i!="id"
-                            td.cell(i=idx f=i) #{col}
-                        //else
-                            td(i=idx f=i) #{col}
-                    //- for col in row
-                        td.cell(v=row[col]) #{col}
             tr
                 td
                     button.add 추가하기
-                //- for col in rr[0]
                 each name, i in f
                         case name
                             when 'id'

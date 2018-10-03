@@ -46,7 +46,7 @@
 ### 위치
 |위치|제목|요약|
 |-|-|-|
-|[/sqldb](/squdb)|Sequelize CUID|on web|
+|[/sqldb](/sqldb)|Sequelize CUID|on web|
 
 ---
 
