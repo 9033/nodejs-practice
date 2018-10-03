@@ -30,9 +30,17 @@ html
                     td
                         button.del(i=idx) 삭제
                     each col, i in row
-                        if i!="id"
+                        case i
+                            when 'id'
+                            when 'createdAt'
+                            when 'updatedAt'
+                            when 'deletedAt'
+                                td(i=idx f=i) #{col}
+                            default
+                                td.cell(i=idx f=i) #{col}
+                        //if i!="id"
                             td.cell(i=idx f=i) #{col}
-                        else
+                        //else
                             td(i=idx f=i) #{col}
                     //- for col in row
                         td.cell(v=row[col]) #{col}

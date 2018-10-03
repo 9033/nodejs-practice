@@ -137,24 +137,33 @@ const server=http.createServer(function (req, res) {
         });
         return req.on('end',()=>{
             const b=JSON.parse(body);
-            console.log('POST 본문(body):',b);
+            console.log('PATCH 본문(body):',b);
             // const id=+new Date();
             // users[id]=name;
             // res.writeHead(201);
             const o={};
             o[b.field]=b.toval;
             // user.save({where:{id:b.id}})
-            user.update(o,  {where:{id:b.id}})
-            // user.update({ title: 'foooo', description: 'baaaaaar'},  {fields: [b.field],where:{id:b.id}})
-            .then(r=>{
-                console.log('update ok');
-                res.end('POST ok!');
-            })
-            .catch(e=>{
-                console.error(e);
-                res.end('POST not ok!');
-            });            
+            if(['id','createdAt','updatedAt','deletedAt'].every(v=>v!=b.field))
+                user.update(o,  {where:{id:b.id}})
+                // user.update({ title: 'foooo', description: 'baaaaaar'},  {fields: [b.field],where:{id:b.id}})
+                .then(r=>{
+                    console.log('update ok');
+                    res.end('PATCH ok!');
+                })
+                .catch(e=>{
+                    console.error(e);
+                    res.end('PATCH not ok!');
+                });
+            else
+                res.end('PATCH not ok!');
         });
+    }
+    else if(req.method=='DELETE'){
+
+    }
+    else if(req.method=='POST'){
+
     }
 });
 server.listen(80, ()=>{

@@ -41,6 +41,15 @@
 
 ---
 
+## Node.js Sequelize CUID 
+### 링크
+### 위치
+|위치|제목|요약|
+|-|-|-|
+|[/sqldb](/squdb)|Sequelize CUID|on web|
+
+---
+
 ## 기타
 javascript는 해봄.  
 실습 하면서 새로 접하는것.
