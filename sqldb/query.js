@@ -29,6 +29,9 @@ const def={
         allowNull:false,
         unique: true,
     },
+    comment:{
+        type:Sequelize.STRING,        
+    },
 };
 const user=sequelize.define('user',def,{
     //timestamps:true,
@@ -165,8 +168,17 @@ const server=http.createServer(function (req, res) {
             body+=d;
         });
         return req.on('end',()=>{
-            const b=JSON.parse(body);
+            const b=parseInt(JSON.parse(body),10);
             console.log('DELETE 본문(body):',b);
+            user.destroy({where:{id:b}})
+            .then(r=>{
+                console.log('destroy ok');
+                res.end('DELETE ok!');
+            })
+            .catch(e=>{
+                console.error(e);
+                res.end('DELETE not ok!');
+            });
             res.end('DELETE ok!');
         });
     }

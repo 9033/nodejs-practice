@@ -68,25 +68,8 @@ html
                 })
                 .then(res=>res);
             }
-            const r=JSON.parse('!{r}');
-            const fields=JSON.parse('!{fields}');
-            //- const rr=JSON.parse(r);
-            //- console.log(rr);
-            let modify=false;//추가 혹은 수정중?
-
-            //수정 버튼을 클릭
-            function clickupdate(e){
-                //- console.log(e.target.parentNode);
-                //- console.log(e.target.previousSibling.value);
-                //- console.log(e.target.parentNode.getAttribute('i'));
-                //- console.log(e.target.parentNode.getAttribute('f'));
-                const idx=e.target.parentNode.getAttribute('i')
-                const id=r[idx]['id'];
-                const field=e.target.parentNode.getAttribute('f');                
-                const fromval=r[idx][field];
-                const toval=e.target.previousSibling.value;
-                //console.log(id,field,inval);
-                mxhr('PATCH',document.location.href,JSON.stringify({id,field,fromval,toval}))
+            function xmxhr(method,send,headers={}){
+                mxhr(method,document.location.href,send,headers)
                 .then(r=>{
                     //서버에서 응답이 온 후에 리프레시
                     console.log(r);
@@ -94,6 +77,21 @@ html
                 }).catch(e=>{
                     console.error(e);
                 });
+            }
+            const r=JSON.parse('!{r}');
+            const fields=JSON.parse('!{fields}');
+
+            let modify=false;//추가 혹은 수정중?
+
+            //수정 버튼을 클릭
+            function clickupdate(e){
+                const idx=e.target.parentNode.getAttribute('i')
+                const id=r[idx]['id'];
+                const field=e.target.parentNode.getAttribute('f');                
+                const fromval=r[idx][field];
+                const toval=e.target.previousSibling.value;
+
+                xmxhr('PATCH',JSON.stringify({id,field,fromval,toval}));
             }
 
             //삭제 버튼을 클릭
@@ -104,6 +102,7 @@ html
 
                 const id=e.target.parentNode.nextSibling.innerText;
                 console.log(id);
+                xmxhr('DELETE',JSON.stringify(id));
             }
             document.querySelectorAll("button.del").forEach(c=>{c.onclick=clickdel;});
 
@@ -113,26 +112,7 @@ html
 
                 let p={};
                 document.querySelectorAll("input.add").forEach(c=>{p[c.name]=c.value;});
-                mxhr('POST',document.location.href,JSON.stringify(p))
-                .then(r=>{
-                    //서버에서 응답이 온 후에 리프레시
-                    console.log(r);
-                    document.location=document.location;
-                }).catch(e=>{
-                    console.error(e);
-                });
-                //- let form=document.createElement('form');
-                //- document.body.appendChild(form);
-                //- document.querySelectorAll("input.add").forEach(c=>{form.appendChild(c);});
-                //- //- form.addEventListener('submit',()=>{
-                //- //-     console.log('submit');
-                //- //- });
-                //- form.onsubmit=()=>{
-                //-     console.log('submit');
-                //- }
-                //- form.method='POST';
-                //- form.action='/';
-                //- form.submit();
+                xmxhr('POST',JSON.stringify(p));
             }
             //추가하기 버튼을 클릭
             function clickadd(e){
@@ -147,20 +127,16 @@ html
                 btn.onclick=adddata;
                 e.target.innerText='';
                 e.target.appendChild(btn);
-
-                //- console.log(e.target.parentNode);
             }
             document.querySelectorAll("button.add").forEach(c=>{c.onclick=clickadd;});
 
             //본문을 더블 클릭 -> 수정
             function createinput(e){
-                //- console.log(e.target.innerText);                
                 if(modify)return modify;
                 modify=true;
                 document.querySelectorAll("button.add, button.del").forEach(c=>{c.disabled=true;});
                 
                 e.target.ondblclick=null;
-                //const t=[...e.target.parentNode.chlidren];
 
                 //입력 박스
                 const input=document.createElement('input');
