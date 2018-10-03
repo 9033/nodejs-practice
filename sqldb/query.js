@@ -160,10 +160,44 @@ const server=http.createServer(function (req, res) {
         });
     }
     else if(req.method=='DELETE'){
-
+        let body='';
+        req.on('data',(d)=>{
+            body+=d;
+        });
+        return req.on('end',()=>{
+            const b=JSON.parse(body);
+            console.log('DELETE 본문(body):',b);
+            res.end('DELETE ok!');
+        });
     }
     else if(req.method=='POST'){
+        let body='';
+        req.on('data',(d)=>{
+            body+=d;
+        });
+        return req.on('end',()=>{
+            const b=JSON.parse(body);
+            console.log('POST 본문(body):',b);
+            
+            const c=['id','createdAt','updatedAt','deletedAt'];
+            //b=b.filter(t=>c.every(tt=>(tt!=t)));
+            c.forEach(f=>{
+                delete b[f];
+            });
+            console.log(b);
+            // const o={};
+            // o[b.field]=b.toval;
 
+            user.create(b)
+            .then(r=>{
+                console.log('create ok');
+                res.end('POST ok!');
+            })
+            .catch(e=>{
+                console.error(e);
+                res.end('POST not ok!');
+            });
+        });
     }
 });
 server.listen(80, ()=>{

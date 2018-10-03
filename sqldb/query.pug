@@ -46,11 +46,18 @@ html
                         td.cell(v=row[col]) #{col}
             tr
                 td
-                    button.add 추가
+                    button.add 추가하기
                 //- for col in rr[0]
-                for i in f
-                    td
-                        input.add(style='display:none;')
+                each name, i in f
+                        case name
+                            when 'id'
+                            when 'createdAt'
+                            when 'updatedAt'
+                            when 'deletedAt'
+                                td
+                            default
+                                td.cell(name=name)
+                                    input.add(type='text' name=name disabled)
 
         script.
             function mxhr(method,url,send,headers={}){
@@ -101,12 +108,47 @@ html
             document.querySelectorAll("button.del").forEach(c=>{c.onclick=clickdel;});
 
             //추가 버튼을 클릭
+            function adddata(e){
+                e.target.disabled=true;
+
+                let p={};
+                document.querySelectorAll("input.add").forEach(c=>{p[c.name]=c.value;});
+                mxhr('POST',document.location.href,JSON.stringify(p))
+                .then(r=>{
+                    //서버에서 응답이 온 후에 리프레시
+                    console.log(r);
+                    document.location=document.location;
+                }).catch(e=>{
+                    console.error(e);
+                });
+                //- let form=document.createElement('form');
+                //- document.body.appendChild(form);
+                //- document.querySelectorAll("input.add").forEach(c=>{form.appendChild(c);});
+                //- //- form.addEventListener('submit',()=>{
+                //- //-     console.log('submit');
+                //- //- });
+                //- form.onsubmit=()=>{
+                //-     console.log('submit');
+                //- }
+                //- form.method='POST';
+                //- form.action='/';
+                //- form.submit();
+            }
+            //추가하기 버튼을 클릭
             function clickadd(e){
                 if(modify)return modify;
                 modify=true;
                 document.querySelectorAll("button.add, button.del").forEach(c=>{c.disabled=true;});
+                document.querySelectorAll("input.add").forEach(c=>{c.disabled=false;});
 
-                console.log(e.target.parentNode);
+                //추가 버튼
+                const btn=document.createElement('button');
+                btn.innerText='추가';
+                btn.onclick=adddata;
+                e.target.innerText='';
+                e.target.appendChild(btn);
+
+                //- console.log(e.target.parentNode);
             }
             document.querySelectorAll("button.add").forEach(c=>{c.onclick=clickadd;});
 
