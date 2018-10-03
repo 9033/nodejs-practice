@@ -1,0 +1,131 @@
+doctype html
+html
+    head
+        meta(charset='UTF-8')
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        meta(name="format-detection" content="telephone=no")
+        style.
+            table {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+
+            table th, table td {
+                border: 1px solid black;
+            }
+    body
+        table
+            - const rr=JSON.parse(r);
+            - //const rr=r;
+            - const f=JSON.parse(fields);
+            tr
+                th
+                for i in f
+                    th=i                    
+                //- each i, index in rr[0]
+                //-     th=index
+            each row, idx in rr
+                tr
+                    //.data
+                    td
+                        button.del(i=idx) 삭제
+                    each col, i in row
+                        if i!="id"
+                            td.cell(i=idx f=i) #{col}
+                        else
+                            td(i=idx f=i) #{col}
+                    //- for col in row
+                        td.cell(v=row[col]) #{col}
+            tr
+                td
+                    button.add 추가
+                //- for col in rr[0]
+                for i in f
+                    td
+                        input.add(style='display:none;')
+
+        script.
+            function mxhr(method,url,send,headers={}){
+                return fetch(url,{
+                    method,
+                    headers,
+                    body:send,
+                })
+                .then(res=>res);
+            }
+            const r=JSON.parse('!{r}');
+            const fields=JSON.parse('!{fields}');
+            //- const rr=JSON.parse(r);
+            //- console.log(rr);
+            let modify=false;//추가 혹은 수정중?
+
+            //수정 버튼을 클릭
+            function clickupdate(e){
+                //- console.log(e.target.parentNode);
+                //- console.log(e.target.previousSibling.value);
+                //- console.log(e.target.parentNode.getAttribute('i'));
+                //- console.log(e.target.parentNode.getAttribute('f'));
+                const idx=e.target.parentNode.getAttribute('i')
+                const id=r[idx]['id'];
+                const field=e.target.parentNode.getAttribute('f');                
+                const fromval=r[idx][field];
+                const toval=e.target.previousSibling.value;
+                //console.log(id,field,inval);
+                mxhr('PATCH',document.location.href,JSON.stringify({id,field,fromval,toval}))
+                .then(r=>{
+                    //서버에서 응답이 온 후에 리프레시
+                    console.log(r);
+                    document.location=document.location;
+                }).catch(e=>{
+                    console.error(e);
+                });
+            }
+
+            //삭제 버튼을 클릭
+            function clickdel(e){
+                if(modify)return modify;
+                modify=true;
+                document.querySelectorAll("button.add, button.del").forEach(c=>{c.disabled=true;});
+
+                const id=e.target.parentNode.nextSibling.innerText;
+                console.log(id);
+            }
+            document.querySelectorAll("button.del").forEach(c=>{c.onclick=clickdel;});
+
+            //추가 버튼을 클릭
+            function clickadd(e){
+                if(modify)return modify;
+                modify=true;
+                document.querySelectorAll("button.add, button.del").forEach(c=>{c.disabled=true;});
+
+                console.log(e.target.parentNode);
+            }
+            document.querySelectorAll("button.add").forEach(c=>{c.onclick=clickadd;});
+
+            //본문을 더블 클릭 -> 수정
+            function createinput(e){
+                //- console.log(e.target.innerText);                
+                if(modify)return modify;
+                modify=true;
+                document.querySelectorAll("button.add, button.del").forEach(c=>{c.disabled=true;});
+                
+                e.target.ondblclick=null;
+                //const t=[...e.target.parentNode.chlidren];
+
+                //입력 박스
+                const input=document.createElement('input');
+                input.value=e.target.innerText;
+                input.id="modify"
+                e.target.innerText='';
+                e.target.appendChild(input);
+
+                //수정 버튼
+                const btn=document.createElement('button');
+                btn.innerText='수정';
+                btn.onclick=clickupdate;
+                e.target.appendChild(btn);
+
+            }
+            document.querySelectorAll(".cell").forEach(c=>{c.ondblclick=createinput;});
+            
+            

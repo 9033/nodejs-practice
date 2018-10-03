@@ -1,0 +1,15 @@
+{
+  "name": "sqldb",
+  "version": "0.0.1",
+  "description": "sqldb",
+  "scripts": {
+    "start": "node query.js"
+  },
+  "markdown": "github",
+  "private": true,
+  "dependencies": {
+    "pug": "^2.0.3",
+    "sequelize": "^4.39.0",
+    "sqlite3": "^4.0.2"
+  }
+}
