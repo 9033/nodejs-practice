@@ -5,18 +5,18 @@
 [출판사](https://github.com/gilbutITbook/006982), [저자](https://github.com/zerocho/nodejs-book)  
 
 ### 실습 해본 예제  
-|위치|제목|요약|
-|-|-|-|
-|[/rest](/rest)|rest api|라우팅|
-|[/npm](/npm)|npm|패키지 설치, 삭제|
-|[/express/learn-express](/express/learn-express)|express|익스프레스 프레임워크|
-|[/express/learn-sequelize](/express/learn-sequelize)|MySQL|시퀄라이즈로 SQL DB 사용|
-|[/express/learn-mongoose](/express/learn-mongoose)|MongoDB|NoSQL DB 사용|
-|[/nodebird](/nodebird)|sns service|파일 업로드, 로그인|
-|[/nodebird-api](/nodebird-api)|API server|API 서버|
-|[/nodebird-call](/nodebird-call)|API client|호출 서버|
-|[/gif-chat](/gif-chat)|GIF chatting|웹소켓|
-|[/node-auction](/node-auction)|실시간 경매|서버 센트 이벤트|
+|위치|제목|장|요약|
+|-|-|-|-|
+|[/rest](/rest)|rest api|4장|라우팅|
+|[/npm](/npm)|npm|5장|패키지 설치, 삭제|
+|[/express/learn-express](/express/learn-express)|express|6장|익스프레스 프레임워크|
+|[/express/learn-sequelize](/express/learn-sequelize)|MySQL|7장|시퀄라이즈로 SQL DB 사용|
+|[/express/learn-mongoose](/express/learn-mongoose)|MongoDB|8장|NoSQL DB 사용|
+|[/nodebird](/nodebird)|sns service|9장|파일 업로드, 로그인|
+|[/nodebird-api](/nodebird-api)|API server|10장|API 서버|
+|[/nodebird-call](/nodebird-call)|API client|10장|호출 서버|
+|[/gif-chat](/gif-chat)|GIF chatting|11장|웹소켓|
+|[/node-auction](/node-auction)|실시간 경매|12장|서버 센트 이벤트|
 
 ---
 
