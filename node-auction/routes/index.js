@@ -8,6 +8,8 @@ const midware=require('./middlewares');
 
 const router=express.Router();
 
+const schedule=require('node-schedule');
+
 router.use((req,res,next)=>{
     res.locals.user=req.user;
     next();
@@ -62,12 +64,27 @@ const upload=multer({
 router.post('/good',midware.isLoggedIn,upload.single('img'),async (req,res,next)=>{
     try{
         const {name,price}=req.body;
-        await models.Good.create({
+        const good=await models.Good.create({
             ownerId:req.user.id,
             name,
             img:req.file.filename,
             price,
         });
+
+        const end=new Date();
+        end.setDate(end.getDate()+1);
+        schedule.scheduleJob(end,async ()=>{
+            const success=await models.Auction.find({
+                where:{goodId:good.id},
+                order:[['bid','DESC']],
+            });
+            await models.Good.update({soldId:success.userId},{where:{id:good.id}});
+            await models.User.update(
+                {money:models.sequelize.literal(`money-${success.bid}`)},
+                {where:{id:success.userId}}
+            );
+        });
+
         res.redirect('/');
     }
     catch(e){
