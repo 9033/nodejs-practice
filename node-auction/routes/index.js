@@ -161,4 +161,22 @@ router.post('/good/:id/bid',midware.isLoggedIn,async (req,res,next)=>{
     }
 });
 
+router.get('/list',midware.isLoggedIn,async (req,res,next)=>{
+    try{
+        const goods=await models.Good.findAll({
+            where:{soldId:req.user.id},
+            include:{model:models.Auction},
+            order:[[{model:models.Auction},'bid','DESC']],
+        });
+        res.render('list',{
+            title:'낙찰 목록 - NodeAuction',
+            goods,
+        });
+    }
+    catch(e){
+        console.error(e);
+        next(e);
+    }
+});
+
 module.exports=router;
