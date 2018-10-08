@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize=new Sequelize('database', 'username', 'password', {
     dialect: 'sqlite',
-    //storage: 'db.sqlite',
+    storage: 'db.sqlite',
     // logging: false,
 });
 const def={
@@ -18,16 +18,16 @@ const user=sequelize.define('user',def,{
     //timestamps:true,
 });
 
-r=async ()=>{
-    let ret=await user.sync({force:true});
+const r=async ()=>{
+    //let ret=await user.sync({force:true});
     //console.log(ret);
-    ret=await user.create({
-        name:'first',
-    });
-    ret=await user.create({
-        name:'second',
-    });
-}
+    // ret=await user.create({
+    //     name:'first',
+    // });
+    // ret=await user.create({
+    //     name:'second',
+    // });
+};
 r();
 
 var pug=require('pug');
@@ -52,13 +52,14 @@ const server=http.createServer(function (req, res) {
                 let ren=[];
                 for(i in users){
                     // console.log(u[i]);        
-                    ren.push(users[i].get());
+                    ren.push( users[i].get() );
                 }
                 console.log('SERVER : render',ren);
 
                 res.writeHead(200, {'Content-Type':  'text/html' }); 
-                res.write(pug.renderFile('query.pug',{fields:JSON.stringify(fields),r:JSON.stringify(ren)}));
-                //res.write(pug.renderFile('query.pug',{fields,r:ren}));
+                // res.write(pug.renderFile('query.pug',{fields:JSON.stringify(fields),r:JSON.stringify(ren)}));
+                // res.write(pug.renderFile('query.pug',{fields:JSON.stringify(fields),r: JSON.stringify(ren).replace(/'/g,"\\'")  }));
+                res.write(pug.renderFile('query.pug',{fields,r:ren}));
                 // res.end();
             }
             catch(e){
@@ -116,7 +117,7 @@ const server=http.createServer(function (req, res) {
                 console.error(e);
                 res.end('DELETE not ok!');
             });
-            res.end('DELETE ok!');
+            // res.end('DELETE ok!');
         });
     }
     else if(req.method=='POST'){

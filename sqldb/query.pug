@@ -15,8 +15,10 @@ html
             }
     body
         table
-            - const rr=JSON.parse(r);
-            - const f=JSON.parse(fields);
+            - const rr=r;//JSON.parse(r);
+            - const f=fields;//JSON.parse(fields);
+            - const jsonr=JSON.stringify(r).replace(/\\/g,"\\\\").replace(/'/g,"\\'");
+            - const jsonf=JSON.stringify(fields).replace(/\\/g,"\\\\").replace(/'/g,"\\'");
             tr
                 th
                 for i in f
@@ -68,8 +70,9 @@ html
                     console.error(e);
                 });
             }
-            const r=JSON.parse('!{r}');
-            const fields=JSON.parse('!{fields}');
+            
+            const r=JSON.parse('!{jsonr}');
+            const fields=JSON.parse('!{jsonf}');
 
             let modify=false;//추가 혹은 수정중?
 
