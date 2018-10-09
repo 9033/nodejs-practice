@@ -17,6 +17,7 @@
 |[/nodebird-call](/nodebird-call)|API client|10장|호출 서버|
 |[/gif-chat](/gif-chat)|GIF chatting|11장|웹소켓|
 |[/node-auction](/node-auction)|실시간 경매|12장|서버 센트 이벤트|
+|[/node-place](/node-place)|장소검색 서비스|13장|Google API|
 
 ---
 

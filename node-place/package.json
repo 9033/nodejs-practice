@@ -1,0 +1,26 @@
+{
+  "name": "node-place",
+  "version": "0.0.1",
+  "description": "google api",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app",
+    "test": "echo test"
+  },
+  "markdown": "github",
+  "private": true,
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "mongoose": "^5.2.12",
+    "morgan": "~1.9.0",
+    "pug": "^2.0.3"
+  }
+}
