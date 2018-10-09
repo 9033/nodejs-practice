@@ -23,11 +23,11 @@ router.get('/autocomplete/:query', (req,res,next)=>{
     });
 });
 router.get('/search/:query', async (req,res,next)=>{
-    const googlePLaces=util.promisify(googleMapsClient.places);
+    const googlePlaces=util.promisify(googleMapsClient.places);
     try{
         const history=new History({query:req.params.query});
         await history.save();
-        const response=await googlePLaces({
+        const response=await googlePlaces({
             query:req.params.query,
             language:'ko',
         });
@@ -35,6 +35,7 @@ router.get('/search/:query', async (req,res,next)=>{
             title:`${req.params.query} 검색 결과`,
             results:response.json.results,
             query:req.params.query,
+            apikey:process.env.PLACES_API_KEY,
         });
     }
     catch(e){
