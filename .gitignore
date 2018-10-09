@@ -71,3 +71,6 @@ typings/
 nodebird/uploads/
 gif-chat/uploads/
 node-auction/uploads/
+
+#sqlite data
+*.sqlite
