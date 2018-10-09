@@ -36,13 +36,13 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(sessionMiddleware);
 app.use(flash());
 
-app.use((req,res,next)=>{
-    if(!req.session.color){
-        const colorHash=new ColorHash();
-        req.session.color=colorHash.hex(req.sessionID);
-    }
-    next();
-});
+// app.use((req,res,next)=>{
+//     if(!req.session.color){
+//         const colorHash=new ColorHash();
+//         req.session.color=colorHash.hex(req.sessionID);
+//     }
+//     next();
+// });
 
 app.use('/',indexRouters);
 

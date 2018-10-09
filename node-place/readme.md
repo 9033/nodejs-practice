@@ -5,6 +5,8 @@ google map api
 + node.js
 ### Framework
 + express
+### API
++ Google places API
 
 ## http methods
 | http메서드   |      주소      |입력|  역할(출력) |
