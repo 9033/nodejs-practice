@@ -1,4 +1,4 @@
-# sequlize CUID on web
+# Sequelize CUID on web
 ## 기능
 브라우저로 db를 조작 가능.  
 ## 조작

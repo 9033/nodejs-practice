@@ -22,7 +22,9 @@
 ---
 
 ## greenlock-express
-### 링크
+### 요약
+Let's Encrypt에서 인증서를 받아서 암호화된 node.js 서버를 실행.  
+### 관련 링크
 [npm 링크](https://www.npmjs.com/package/greenlock-express)
 ### 위치
 |위치|제목|요약|
@@ -32,7 +34,9 @@
 ---
 
 ## Node.js MongoDB Driver
-### 링크
+### 요약
+MongoDB에 쿼리를 실행하는 연습.  
+### 관련 링크
 [manual](https://docs.mongodb.com/manual)  
 [npm 링크](https://www.npmjs.com/package/mongodb)  
 ### 위치
@@ -43,7 +47,12 @@
 ---
 
 ## Node.js Sequelize CUID 
-### 링크
+### 요약
+Sequelize를 실행하는 연습.  
+브라우저로 db를 조작 가능.  
+### 관련 링크
+[Sequelizejs](http://docs.sequelizejs.com)  
+[npm 링크](https://www.npmjs.com/package/sequelize)  
 ### 위치
 |위치|제목|요약|
 |-|-|-|

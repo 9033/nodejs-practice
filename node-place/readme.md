@@ -31,3 +31,4 @@ google map api
 
 ## 기타
 result.pug에서 api키를 변수로 입력 받음.  
+google cloud platform을 사용한다.  
