@@ -9,7 +9,6 @@ const mongourl = 'mongodb://localhost:27017';
 
 // Database Name
 const dbName = 'myproject';
-let mongodbclient;
 // // Use connect method to connect to the server
 // MongoClient.connect(url, function(err, client) {
 //   assert.equal(null, err);
@@ -84,6 +83,7 @@ const removeDocument = function(db, callback) {
 
 const  http =require( 'http');
 const  https =require( 'https');
+const  path =require( 'path');
 const fs=require('fs');
 const url=require('url');
 const qs=require('querystring');
@@ -105,16 +105,36 @@ function logs(data,e=''){
 const express=require('express');
 const app=express();
 
+app.set('views', path.join(__dirname, 'pug'));
+app.set('view engine', 'pug');
+
+app.use(express.static(path.join(__dirname,'static')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get('/',(req,res,next)=>{
+  if(!mongodbclient.isConnected()){
+    res.send('db not connected');
+    return res.end();    
+  }
   const db = mongodbclient.db(dbName);
-  findDocuments(db,(docs)=>{
-    console.log(docs);
-    res.send(docs);
-    res.end();
+  const collection = db.collection('documents');
+  collection.find({},{projection:['_id','title']}).toArray()
+  .then(docs=>{
+    // console.log(docs);
+    res.render('main',{docs, title:'main'});
+  })
+  .catch(e=>{
+    next(e);
   });
+  // findDocuments(db,(docs)=>{
+  //   console.log(docs);
+  //   //console.log(typeof(docs));
+  //   // let d=JSON.stringify(docs);
+  //   res.render('main',{docs, title:'main'});
+  //   // res.send(docs);
+  //   // res.end();
+  // });
 });
 
 app.use((req,res,next)=>{
@@ -134,7 +154,7 @@ mongodbclient.connect(function(err, client) {
   assert.equal(null, err);
   console.log("Connected successfully to db server");
   //mongodbclient=client;
-  setTimeout(()=>server.close(),5000);
+  // setTimeout(()=>server.close(),5000);
   // mongodbclient.on('serverClosed',event=>{
   //   console.log('serverclosed');
   // });
@@ -149,6 +169,6 @@ server.on('close', ()=>{
   logs('SERVER : bye');
 });
 
-// mongodbclient.on('serverClosed',event=>{
-//   console.log('serverclosed');
-// });
+mongodbclient.on('serverClosed',event=>{
+  console.log('serverclosed connect');
+});
