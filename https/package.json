@@ -10,8 +10,8 @@
   "markdown": "github",
   "private": true,
   "dependencies": {
-    "dotenv": "^6.0.0",
-    "express": "^4.16.3",
-    "greenlock-express": "^2.4.6"
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "greenlock-express": "^2.4.10"
   }
 }
