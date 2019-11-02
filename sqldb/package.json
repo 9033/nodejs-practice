@@ -9,7 +9,7 @@
   "private": true,
   "dependencies": {
     "pug": "^2.0.3",
-    "sequelize": "^4.39.0",
+    "sequelize": "^5.15.1",
     "sqlite3": "^4.0.2"
   }
 }
