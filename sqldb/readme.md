@@ -18,3 +18,6 @@ id, createdAt, updateAt, deleteAt필드는 사용자가 값을 새로 넣거나 
 | PATCH   |/    ||수정|
 | POST    |/    ||추가|
 | DELETE    |/    ||삭제|
+
+## 실행
+`node query.js`

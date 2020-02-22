@@ -20,36 +20,31 @@ r();
 const pug=require('pug');
 const http=require('http');
 const fs=require('fs');
-
+/*
+db를 수정하거나 삭제나 추가한후 새로고침 한다. 그외에 방법으로 응답으로 json을 받아서 다시 front에서 그려주는 방법이 있다.
+*/
 const server=http.createServer(function (req, res) {
     console.log('SERVER : res');
     if(req.method=='GET'){//cRud or serve static
         async function get(){
             try{
-                let fields=[];
+                let columns=[];
                 const descusers=await db.sequelize.getQueryInterface().describeTable('users');
                 for(i in descusers){
-                    //console.log(r[i],i);        
-                    // ren.push(u[i].get());
-                    fields.push(i);
+                    columns.push(i);
                 }
-                console.log(fields);          
+                console.log(columns);          
 
                 const o={};
                 const users=await db.user.findAll(o);
-                // console.log(users.array());
                 let ren=[];
                 for(i in users){
-                    // console.log(u[i]);        
                     ren.push( users[i].get() );
                 }
                 console.log('SERVER : render',ren);
 
                 res.writeHead(200, {'Content-Type':  'text/html' }); 
-                // res.write(pug.renderFile('query.pug',{fields:JSON.stringify(fields),r:JSON.stringify(ren)}));
-                // res.write(pug.renderFile('query.pug',{fields:JSON.stringify(fields),r: JSON.stringify(ren).replace(/'/g,"\\'")  }));
-                res.write(pug.renderFile('query.pug',{fields,r:ren}));
-                // res.end();
+                res.write(pug.renderFile('query.pug',{columns,r:ren}));
             }
             catch(e){
                 console.error(e);
@@ -82,9 +77,8 @@ const server=http.createServer(function (req, res) {
             console.log('PATCH 본문(body):',b);
 
             const o={};
-            o[b.field]=b.toval;
-            // user.save({where:{id:b.id}})
-            if(['id','createdAt','updatedAt','deletedAt'].every(v=>v!=b.field))
+            o[b.field]=b.toval;//한번에 한가지 컬럼만 수정이 가능.
+            if(['id','createdAt','updatedAt','deletedAt'].every(v=>v!=b.field))//수정하려는 필드가 특정 필드가 아닐때
                 db.user.update(o,  {where:{id:b.id}})
                 .then(r=>{
                     console.log('update ok');
@@ -126,7 +120,7 @@ const server=http.createServer(function (req, res) {
             const b=JSON.parse(body);
             console.log('POST 본문(body):',b);
             
-            const c=['id','createdAt','updatedAt','deletedAt'];
+            const c=['id','createdAt','updatedAt','deletedAt'];//삭제할 필드
             c.forEach(f=>{
                 delete b[f];
             });

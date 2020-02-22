@@ -16,9 +16,9 @@ html
     body
         table
             - const rr=r;//JSON.parse(r);
-            - const f=fields;//JSON.parse(fields);
+            - const f=columns;//JSON.parse(columns);
             - const jsonr=JSON.stringify(r).replace(/\\/g,"\\\\").replace(/'/g,"\\'");
-            - const jsonf=JSON.stringify(fields).replace(/\\/g,"\\\\").replace(/'/g,"\\'");
+            - const jsonf=JSON.stringify(columns).replace(/\\/g,"\\\\").replace(/'/g,"\\'");
             tr
                 th
                 for i in f
