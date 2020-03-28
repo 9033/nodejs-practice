@@ -15,9 +15,12 @@ id, createdAt, updateAt, deleteAt필드는 사용자가 값을 새로 넣거나 
 | http메서드   |      주소      |입력|  역할(출력) |
 |-|-|-|-|
 | GET    |/ ||조회|
-| PATCH   |/    ||수정|
-| POST    |/    ||추가|
-| DELETE    |/    ||삭제|
+| GET    |/json ||조회(json)|
+| GET    |/*.ods |파일명|조회(ods)|
+| PATCH   |/    |json: {id, toval, fromval}|수정|
+| POST    |/    |json: {컬럼명:값} |추가|
+| DELETE    |/    |id|삭제|
 
 ## 실행
-`node query.js`
+`node query.js`  
+`nodemon query.js`  
