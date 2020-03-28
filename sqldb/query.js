@@ -1,4 +1,5 @@
 const db=require('./models');
+const XLSX=require('xlsx')
 
 const r=async (init=false)=>{//db초기화
     if(init){/* db의 데이터를 초기화 */
@@ -20,41 +21,64 @@ r();
 const pug=require('pug');
 const http=require('http');
 const fs=require('fs');
+
+const getUsers = async ()=>{
+    let columns=[];
+    const descusers=await db.sequelize.getQueryInterface().describeTable('users');
+    for(i in descusers){
+        columns.push(i);
+    }
+    console.log(columns);          
+
+    const o={};
+    const users=await db.user.findAll(o);
+    let ren=[];
+    for(i in users){
+        ren.push( users[i].get() );
+    }
+    return {columns, ren}
+}
+
+const getRead = (res) => (func, callback) => {
+    return func().then(callback)
+    .catch(e=>{console.error(e);res.writeHead(404,'NOT FOUND')}).finally(()=>{res.end()})
+}
 /*
 db를 수정하거나 삭제나 추가한후 새로고침 한다. 그외에 방법으로 응답으로 json을 받아서 다시 front에서 그려주는 방법이 있다.
 */
 const server=http.createServer(function (req, res) {
     console.log('SERVER : res');
     if(req.method=='GET'){//cRud or serve static
-        async function get(){
-            try{
-                let columns=[];
-                const descusers=await db.sequelize.getQueryInterface().describeTable('users');
-                for(i in descusers){
-                    columns.push(i);
+        if(req.url=='/'){
+            getRead(res)(getUsers, ({columns, ren})=>{
+                    console.log('SERVER : render',ren);
+                    res.writeHead(200, {'Content-Type':  'text/html' }); 
+                    res.write(pug.renderFile('query.pug',{columns,r:ren}));
                 }
-                console.log(columns);          
-
-                const o={};
-                const users=await db.user.findAll(o);
-                let ren=[];
-                for(i in users){
-                    ren.push( users[i].get() );
-                }
-                console.log('SERVER : render',ren);
-
-                res.writeHead(200, {'Content-Type':  'text/html' }); 
-                res.write(pug.renderFile('query.pug',{columns,r:ren}));
-            }
-            catch(e){
-                console.error(e);
-            }
-            finally{
-                res.end();
-            }
+            )
         }
-        if(req.url=='/')
-            get();
+        else if(req.url=='/json'){// json파일 출력.
+            getRead(res)(getUsers, ({columns, ren})=>{
+                    console.log('SERVER : render',ren);
+                    res.writeHead(200, {'Content-Type':  'application/json' });                 
+                    res.write( JSON.stringify(ren) );
+                }
+            )
+        }
+        else if(/^\/[^/\\:*?"<>|]+\.ods$/.test(req.url)){// ods파일 출력. // 윈도우 기준.
+            getRead(res)(getUsers, ({columns, ren})=>{
+                    console.log('SERVER : render',ren);
+                    res.writeHead(200, {'Content-Type':  'application/vnd.oasis.opendocument.spreadsheet' });                 
+
+                    let wb = XLSX.utils.book_new();
+                    wb.SheetNames.push("user");
+                    wb.Sheets['user'] = XLSX.utils.json_to_sheet(ren, {header:columns})
+                    let ods = XLSX.write(wb, { bookType: 'ods', type: 'binary' });
+                    // console.log(columns);
+                    res.write( ods ,'binary');
+                }
+            )
+        }
         else {//serve file
             fs.readFile(`./public${req.url}`, (e,d)=>{
                 if(e){
@@ -121,19 +145,38 @@ const server=http.createServer(function (req, res) {
             console.log('POST 본문(body):',b);
             
             const c=['id','createdAt','updatedAt','deletedAt'];//삭제할 필드
-            c.forEach(f=>{
-                delete b[f];
-            });
-            console.log(b);
-            db.user.create(b)
-            .then(r=>{
-                console.log('create ok');
-                res.end('POST ok!');
-            })
-            .catch(e=>{
-                console.error(e);
-                res.end('POST not ok!');
-            });
+            if( b.hasOwnProperty('length') ){ //excel 업로드에 사용.
+                for(let i = 0;i<b.length;i++){
+                    c.forEach(f=>{
+                        delete b[i][f];
+                    });
+                }
+                console.log(b);
+                db.user.bulkCreate(b)
+                .then(r=>{
+                    console.log('create ok');
+                    res.end('POST ok!');
+                })
+                .catch(e=>{
+                    console.error(e);
+                    res.end('POST not ok!');
+                });
+            }
+            else{
+                c.forEach(f=>{
+                    delete b[f];
+                });
+                console.log(b);
+                db.user.create(b)
+                .then(r=>{
+                    console.log('create ok');
+                    res.end('POST ok!');
+                })
+                .catch(e=>{
+                    console.error(e);
+                    res.end('POST not ok!');
+                });
+            }
         });
     }
 });
