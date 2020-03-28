@@ -74,3 +74,9 @@ node-auction/uploads/
 
 #sqlite data
 *.sqlite
+
+#libreoffice temp file
+.~lock.*
+
+#office temp file
+~$*
