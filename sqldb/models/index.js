@@ -62,7 +62,7 @@ relationship["1:1"]=(db1,sourceKey,db2,foreignKey)=>{
     db1.hasOne(db2,{foreignKey,sourceKey});
     db2.belongsTo(db1,{foreignKey,targetKey:sourceKey});    
 }
-relationship["N:M"]=(dbN,dbN,through)=>{
+relationship["N:M"]=(dbN,dbM,through)=>{
     dbN.belongsToMany(dbM,{through});
     dbM.belongsToMany(dbN,{through});    
 }
