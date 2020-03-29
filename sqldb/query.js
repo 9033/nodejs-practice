@@ -14,6 +14,7 @@ const r=async (init=false)=>{//db초기화
     }
     else{/* db의 데이터를 그대로 사용. */        
         await db.user.sync();
+        await db.car.sync();
     }
 };
 r();
@@ -22,21 +23,26 @@ const pug=require('pug');
 const http=require('http');
 const fs=require('fs');
 
-const getUsers = async ()=>{
+const getAllData = (table) => async () =>{
     let columns=[];
-    const descusers=await db.sequelize.getQueryInterface().describeTable('users');
-    for(i in descusers){
+    const descTable=await table.describe();
+    for(i in descTable){
         columns.push(i);
     }
     console.log(columns);          
 
     const o={};
-    const users=await db.user.findAll(o);
-    let ren=[];
-    for(i in users){
-        ren.push( users[i].get() );
+    const datas=await table.findAll(o);
+    let rows=[];
+    for(i in datas){
+        rows.push( datas[i].get() );
     }
-    return {columns, ren}
+    return {columns, rows}
+}
+
+const getUsers = async ()=>{
+    const {columns, rows} = await getAllData(db.user)()
+    return {columns, ren:rows}
 }
 
 const getRead = (res) => (func, callback) => {
